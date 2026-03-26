@@ -14,10 +14,10 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
 	tasks, err := db.SearchTasks(limit, search)
 	if err != nil {
-		writeJSON(w, map[string]string{"error": err.Error()})
+		writeJSON(w, map[string]string{"error": err.Error()}, http.StatusInternalServerError)
 		return
 	}
 
-	writeJSON(w, TasksResp{Tasks: tasks})
+	writeJSON(w, TasksResp{Tasks: tasks}, http.StatusOK)
 
 }

@@ -55,6 +55,9 @@ func Tasks(limit int) ([]*Task, error) {
 		}
 		tasks = append(tasks, &t)
 	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
 
 	if tasks == nil {
 		tasks = []*Task{}
@@ -193,6 +196,9 @@ func SearchTasks(limit int, search string) ([]*Task, error) {
 			return nil, err
 		}
 		tasks = append(tasks, &t)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 	if tasks == nil {
 		tasks = []*Task{}

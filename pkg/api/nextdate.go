@@ -66,14 +66,14 @@ func nextDayHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		now, err = time.Parse(dateFormat, nowString)
 		if err != nil {
-			writeJSON(w, map[string]string{"error": err.Error()})
+			writeJSON(w, map[string]string{"error": err.Error()}, http.StatusBadRequest)
 			return
 		}
 	}
 
 	next, err := NextDate(now, date, repeat)
 	if err != nil {
-		writeJSON(w, map[string]string{"error": err.Error()})
+		writeJSON(w, map[string]string{"error": err.Error()}, http.StatusBadRequest)
 		return
 	}
 

@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"go_final/pkg/api"
+	"log"
 	"net/http"
 	"os"
 )
@@ -17,7 +18,7 @@ func StartServer() {
 
 	fmt.Println("сервер запущен на порту", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		fmt.Println("ошибка запуска сервера", err)
+		log.Fatal("ошибка запуска сервера", err)
 	}
 
 }

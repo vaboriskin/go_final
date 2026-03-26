@@ -23,13 +23,13 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 	var req SignInReq
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
-		writeJSON(w, SignInResp{Error: err.Error()})
+		writeJSON(w, SignInResp{Error: err.Error()}, http.StatusBadRequest)
 		return
 	}
 
 	pass := os.Getenv("TODO_PASSWORD")
 	if pass == "" || pass != req.Password {
-		writeJSON(w, SignInResp{Error: "неверный пароль"})
+		writeJSON(w, SignInResp{Error: "неверный пароль"}, http.StatusUnauthorized)
 		return
 	}
 
@@ -39,7 +39,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 	})
 	tokenString, err := token.SignedString([]byte(pass))
 	if err != nil {
-		writeJSON(w, SignInResp{Error: "Ошибка генерации токена"})
+		writeJSON(w, SignInResp{Error: "Ошибка генерации токена"}, http.StatusInternalServerError)
 		return
 	}
 
@@ -51,7 +51,7 @@ func signInHandler(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   8 * 3600,
 	})
 
-	writeJSON(w, SignInResp{Token: tokenString})
+	writeJSON(w, SignInResp{Token: tokenString}, http.StatusOK)
 }
 
 func hashPassword(pass string) string {
